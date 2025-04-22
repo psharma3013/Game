@@ -1,1 +1,51 @@
-ggg
+import java.util.Random;
+import java.util.Scanner;
+
+public class DodgeGame {
+    static final int WIDTH = 10;
+    static int playerPos = WIDTH / 2;
+    static boolean isRunning = true;
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        System.out.println("=== Dodge the Blocks ===");
+        System.out.println("Use 'a' to move left, 'd' to move right. Press Enter after each move.");
+
+        while (isRunning) {
+            String[] row = new String[WIDTH];
+            for (int i = 0; i < WIDTH; i++) row[i] = " ";
+
+            // Generate falling block
+            int blockPos = new Random().nextInt(WIDTH);
+            row[blockPos] = "B";
+
+            // Check collision
+            if (blockPos == playerPos) {
+                row[playerPos] = "X"; // crash
+                printRow(row);
+                System.out.println("💥 You got hit! Game Over.");
+                break;
+            }
+
+            row[playerPos] = "P";
+            printRow(row);
+
+            // Get player move
+            System.out.print("Move (a/d): ");
+            String input = scanner.nextLine();
+
+            if (input.equals("a") && playerPos > 0) playerPos--;
+            if (input.equals("d") && playerPos < WIDTH - 1) playerPos++;
+
+            
+        }
+    }
+
+    static void printRow(String[] row) {
+        for (String cell : row) {
+            System.out.print("[" + cell + "]");
+        }
+        System.out.println();
+    }
+}
+
